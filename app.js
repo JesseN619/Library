@@ -2,38 +2,34 @@ let myLibrary = [];
 
 const library = document.getElementById('library');
 
-function Book(title, author, pages, haveRead) {
+function Book(title, author, status) {
   this.title = title
   this.author = author
-  this.pages = pages
-  this.haveRead = haveRead
-  this.info = function() {
-    //return this.title + " by " + this.author + ", " + this.pages + " pages, " + this.haveRead
-    return `${title} by ${author}, ${pages} pages, ${haveRead}`
-  }
+  this.status = status
 }
 
-function addBookToLibrary(title, author, pages, haveRead) {
-  let newBook = new Book(title, author, pages, haveRead);
+function addBookToLibrary(title, author, status) {
+  let newBook = new Book(title, author, status);
   myLibrary.push(newBook);
 }
 
 function displayLibrary() {
   for (i = 0; i < myLibrary.length; i++) { // loop through each book in library
-    // create Book card __ let div = document.createElement('div')
-    let bookCard = document.createElement('div');
-    // add CSS class to Book card __ div.className = 'myclass'
-    for (const property in myLibrary[i]) { // loop through each property in book
-      // 
-      console.log(myLibrary[i][property]);
+    let newRow = document.createElement('tr');
+    
+    for (let key in myLibrary[i]) { // loop through each property in book
+      let value = myLibrary[i][key];
+      let newCell = document.createElement('td');
+      newCell.innerHTML = value;
+      newRow.appendChild(newCell);
     }
 
-    library.appendChild(bookCard);
+    library.appendChild(newRow);
   }
 }
 
-addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, "not read");
-addBookToLibrary("Star Wars", "George Lucas", 300, "read");
-addBookToLibrary("The Outsider", "Stephen King", 400, "not read");
+addBookToLibrary("The Hobbit", "J.R.R. Tolkien", "not read");
+addBookToLibrary("Star Wars", "George Lucas", "read");
+addBookToLibrary("The Outsider", "Stephen King", "not read");
 
-console.log(displayLibrary());
+displayLibrary();
