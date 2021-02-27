@@ -4,19 +4,34 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="styles.css">
-    <title>My Library</title>
+    <title>****My Library</title>
 </head>
 
 <body>
     <h1>My Library</h1>
-    <table id="library">
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
+    <button id="new-book" type="button">New Book</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
     </table>
+
+    <div id="overlay">
+        <form>
+            <input type="text" id="title" name="title" placeholder="Title">
+            <br>
+            <input type="text" id="author" name="author" placeholder="Author">
+            <label for="read">Read?</label>
+            <input type="checkbox" id="read" name="read" value="read">
+            <button type="button" id="submit">Submit</button>
+        </form>
+    </div>
 
     <script src="app.js"></script>
 </body>
