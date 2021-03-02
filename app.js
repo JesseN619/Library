@@ -23,14 +23,57 @@ function displayLibrary() {
     
     for (let key in myLibrary[i]) { // loop through each property of book
       let value = myLibrary[i][key];
-      let newCell = document.createElement('td');
-      newCell.innerHTML = value;
+      window.newCell = document.createElement('td');
+      if (key === "status") {
+        if (value === "read") {
+          createReadBtn();
+        } else if (value === "not read") {
+          createNotReadBtn();
+        }
+      } else {
+        newCell.innerHTML = value;
+      }
+      
       newRow.appendChild(newCell);
     }
 
     createDeleteBtn();
 
     tableBody.appendChild(newRow);
+  }
+}
+
+function createReadBtn() {
+  let readBtn = document.createElement("button");
+  readBtn.innerHTML = "Read";
+  readBtn.addEventListener("click", swapReadBtn);
+  newCell.appendChild(readBtn);
+}
+
+function createNotReadBtn() {
+  let readBtn = document.createElement("button");
+  readBtn.innerHTML = "Not Read";
+  readBtn.addEventListener("click", swapReadBtn);
+  newCell.appendChild(readBtn);
+}
+
+function swapReadBtn(e) {
+  if (e.target.innerHTML === "Read") {
+    e.target.innerHTML = "Not Read";
+    // Change read status in myLibrary
+    for (i = 0; i < myLibrary.length; i++) {
+      if (myLibrary[i].title === e.target.parentNode.parentNode.childNodes[0].innerHTML) {
+        myLibrary[i].status = "not read";
+      };
+    }
+  } else if (e.target.innerHTML === "Not Read") {
+    e.target.innerHTML = "Read";
+    // Change read status in myLibrary
+    for (i = 0; i < myLibrary.length; i++) {
+      if (myLibrary[i].title === e.target.parentNode.parentNode.childNodes[0].innerHTML) {
+        myLibrary[i].status = "read";
+      };
+    }
   }
 }
 
@@ -77,3 +120,6 @@ newBookBtn.addEventListener("click", addBook);
 
 const overlay = document.getElementById("overlay");
 //overlay.addEventListener("click", hideForm);
+
+//let testBook = new Book('The Hobbit', 'JRR Tolkien', 'read');
+//displayLibrary();
