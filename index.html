@@ -16,9 +16,9 @@
     <table>
         <thead>
             <tr>
-                <th>Title</th>
+                <th class="first-column">Title</th>
                 <th>Author</th>
-                <th>Status</th>
+                <th id="status">Status</th>
                 <th></th>
             </tr>
         </thead>
@@ -26,16 +26,20 @@
     </table>
 
     <div id="overlay">
-        <form>
-            <input type="text" id="title-input" name="title" placeholder="Title">
-            <br>
-            <input type="text" id="author-input" name="author" placeholder="Author">
-            <br>
-            <label for="read">Read?</label>
-            <input type="checkbox" id="read-checkbox" name="read" value="read">
-            <br>
-            <button type="button" id="submit-button">Submit</button>
-        </form>
+        <div id="form-container">
+            <form>
+                <div id="form-title">New Book</div>
+                <br>
+                <input type="text" id="title-input" name="title" placeholder="Title">
+                <br>
+                <input type="text" id="author-input" name="author" placeholder="Author">
+                <br>
+                <label for="read" id="read-label">Read?</label>
+                <input type="checkbox" id="read-checkbox" name="read" value="read">
+                <br>
+                <button type="button" id="submit-button">Submit</button>
+            </form>
+        </div>
     </div>
 
     <script src="app.js"></script>
