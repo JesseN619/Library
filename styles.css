@@ -9,6 +9,7 @@ button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    box-shadow: 0 1.5px 3px 0 rgba(0, 0, 0, 0.2);
 }
 
 h1 {
@@ -18,7 +19,7 @@ h1 {
 
 #new-book {
     height: 3em;
-    background-color: #7ae7ff;
+    border: 2px solid #7ae7ff;
     width: 30vw;
     margin: 0 auto;
     display: block;
@@ -61,8 +62,8 @@ th {
     width: 100%;
     min-width: 75px;
     max-width: 100px;
+    float: right;
 }
-
 
 /* OVERLAY AND NEW BOOK FORM */
 

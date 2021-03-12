@@ -11,11 +11,14 @@ function Book(title, author, status) {
 function pushBookToLibrary(title, author, status) {
   let newBook = new Book(title, author, status);
   myLibrary.push(newBook);
+  updateLocalStorage();
 }
 
 function displayLibrary() {
   // delete contents of table to render new table with full library
   tableBody.innerHTML = "";
+
+  checkLocalStorage();
 
   for (i = 0; i < myLibrary.length; i++) { // loop through each book in library
     window.newRow = document.createElement('tr');
@@ -99,6 +102,12 @@ function hideForm() {
   document.getElementById("overlay").style.display = "none";
 }
 
+function clearForm() {
+  document.getElementById("title-input").value = "";
+  document.getElementById("author-input").value = "";
+  document.getElementById("read-checkbox").checked = false;
+}
+
 function submitForm() {
   let title = document.getElementById("title-input").value;
   let author = document.getElementById("author-input").value;
@@ -108,12 +117,6 @@ function submitForm() {
   displayLibrary();
   hideForm();
   clearForm();
-}
-
-function clearForm() {
-  document.getElementById("title-input").value = "";
-  document.getElementById("author-input").value = "";
-  document.getElementById("read-checkbox").checked = false;
 }
 
 function addBook() {
@@ -136,3 +139,15 @@ form.addEventListener("click", function(e) {
 pushBookToLibrary('The Hobbit', 'JRR Tolkien', 'Not Read');
 pushBookToLibrary('Light of the Jedi', 'Charles Soule', 'Read');
 displayLibrary();
+
+function updateLocalStorage() {
+  localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+  //library = JSON.parse(localStorage.getItem("library"));
+}
+function checkLocalStorage() {
+  if (localStorage.getItem("myLibrary")) {
+    myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
+  } /*else {
+    myLibrary = DEFAULT_DATA;
+  } */
+}
