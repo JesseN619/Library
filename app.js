@@ -1,6 +1,18 @@
-let myLibrary = [];
+let myLibrary;
+checkLocalStorage();
 
 const tableBody = document.getElementById('tbody');
+
+const newBookBtn = document.getElementById("new-book");
+newBookBtn.addEventListener("click", addBook);
+
+const overlay = document.getElementById("overlay");
+overlay.addEventListener("click", hideForm);
+
+const form = document.querySelector("form");
+form.addEventListener("click", function (e) {
+  e.stopPropagation();
+});
 
 function Book(title, author, status) {
   this.title = title
@@ -17,28 +29,21 @@ function pushBookToLibrary(title, author, status) {
 function displayLibrary() {
   // delete contents of table to render new table with full library
   tableBody.innerHTML = "";
-
   checkLocalStorage();
-
   for (i = 0; i < myLibrary.length; i++) { // loop through each book in library
     window.newRow = document.createElement('tr');
     newRow.className = "bookRow";
-
     for (let key in myLibrary[i]) { // loop through each property of book
       let value = myLibrary[i][key];
       window.newCell = document.createElement('td');
-
       if (key === "status") {
         createReadBtn(value);
       } else {
         newCell.innerHTML = value;
       }
-
       newRow.appendChild(newCell);
     }
-
     createDeleteBtn();
-
     tableBody.appendChild(newRow);
   }
 }
@@ -57,13 +62,15 @@ function createReadBtn(value) {
 }
 
 function swapReadBtn(e) {
+  let targetTitle = e.target.parentNode.parentNode.childNodes[0].innerHTML;
+  let targetAuthor = e.target.parentNode.parentNode.childNodes[1].innerHTML;
   if (e.target.innerHTML === "Read") {
     e.target.innerHTML = "Not Read";
     e.target.style.backgroundColor = "";
     // Change read status in myLibrary
     for (i = 0; i < myLibrary.length; i++) {
-      if (myLibrary[i].title ===
-        e.target.parentNode.parentNode.childNodes[0].innerHTML) {
+      if (myLibrary[i].title === targetTitle &&
+        myLibrary[i].author === targetAuthor) {
         myLibrary[i].status = "Not Read";
       };
     }
@@ -72,12 +79,13 @@ function swapReadBtn(e) {
     e.target.style.backgroundColor = "#7eff7a";
     // Change read status in myLibrary
     for (i = 0; i < myLibrary.length; i++) {
-      if (myLibrary[i].title ===
-        e.target.parentNode.parentNode.childNodes[0].innerHTML) {
+      if (myLibrary[i].title === targetTitle &&
+        myLibrary[i].author === targetAuthor) {
         myLibrary[i].status = "Read";
       };
     }
   }
+  updateLocalStorage();
 }
 
 function createDeleteBtn() {
@@ -88,10 +96,23 @@ function createDeleteBtn() {
   newCell.appendChild(deleteBtn);
   newRow.appendChild(newCell);
 
-  // Delete entire row that the button is in when clicked
-  deleteBtn.addEventListener("click", (event) =>
+  deleteBtn.addEventListener("click", function (event) {
+    let targetTitle = deleteBtn.parentNode.parentNode.childNodes[0].innerHTML;
+    let targetAuthor = deleteBtn.parentNode.parentNode.childNodes[1].innerHTML;
+    // loop through library to find title that matches
+    for (i = 0; i < myLibrary.length; i++) {
+      if (myLibrary[i].title === targetTitle &&
+        myLibrary[i].author === targetAuthor) {
+        myLibrary.splice(i, 1);
+        i--;
+      };
+    }
+    // Delete row from DOM
     deleteBtn.parentNode.parentNode.parentNode.removeChild(
-      deleteBtn.parentNode.parentNode));
+      deleteBtn.parentNode.parentNode);
+
+    updateLocalStorage();
+  });
 }
 
 function showForm() {
@@ -125,29 +146,17 @@ function addBook() {
   submitBtn.addEventListener("click", submitForm);
 }
 
-const newBookBtn = document.getElementById("new-book");
-newBookBtn.addEventListener("click", addBook);
-
-const overlay = document.getElementById("overlay");
-overlay.addEventListener("click", hideForm);
-
-const form = document.querySelector("form");
-form.addEventListener("click", function(e) {
-  e.stopPropagation();
-});
-
-pushBookToLibrary('The Hobbit', 'JRR Tolkien', 'Not Read');
-pushBookToLibrary('Light of the Jedi', 'Charles Soule', 'Read');
-displayLibrary();
-
 function updateLocalStorage() {
   localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
-  //library = JSON.parse(localStorage.getItem("library"));
 }
+
 function checkLocalStorage() {
   if (localStorage.getItem("myLibrary")) {
     myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
-  } /*else {
-    myLibrary = DEFAULT_DATA;
-  } */
+  } else {
+    myLibrary = [{title: "The Hobbit", author: "J.R.R. Tolkien", status: "Not Read"}, 
+    {title: "Lord of the Flies", author: "William Golding", status: "Read"}];
+  }
 }
+
+displayLibrary();
