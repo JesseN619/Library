@@ -14,10 +14,12 @@ form.addEventListener("click", function (e) {
   e.stopPropagation();
 });
 
-function Book(title, author, status) {
-  this.title = title
-  this.author = author
-  this.status = status
+class Book {
+  constructor(title, author, status) {
+    this.title = title
+    this.author = author
+    this.status = status
+  }
 }
 
 function pushBookToLibrary(title, author, status) {
